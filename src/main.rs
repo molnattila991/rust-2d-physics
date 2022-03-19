@@ -13,6 +13,7 @@ use rust_2d_physics::libs::body::Body::{Rectangle, GameBody};
 fn main() { 
     let body1 = Rectangle::new(Point::new(10,10), 100, 300, WHITE);
     let mut body2 = Rectangle::new(Point::new(100,10), 100, 30, RED);
+    let mut direction: Point = Point::new(0,0);
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
@@ -30,12 +31,29 @@ fn main() {
     canvas.clear();
     canvas.present();
 
+
     'running: loop {
         canvas.set_draw_color(LIGHT_BLUE);
         canvas.clear();
 
+
         for event in event_pump.poll_iter() {
             match event {
+                Event::MouseButtonDown { x, y, .. } => {
+                    direction = Point::new(x, y);
+                },
+                Event::KeyDown { keycode: Some(Keycode::Up), .. } => {
+                    direction += Point::new(0,-1);
+                },
+                Event::KeyDown { keycode: Some(Keycode::Down), .. } => {
+                    direction += Point::new(0,1);
+                },
+                Event::KeyDown { keycode: Some(Keycode::Left), .. } => {
+                    direction += Point::new(-1,0);
+                },
+                Event::KeyDown { keycode: Some(Keycode::Right), .. } => {
+                    direction += Point::new(1,0);
+                },
                 Event::Quit {..} |
                 Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
                     break 'running
@@ -49,6 +67,8 @@ fn main() {
         }
 
         canvas.clear();
+
+        body2.setDirection(direction);
 
         body2.update();
 

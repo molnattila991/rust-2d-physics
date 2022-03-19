@@ -26,7 +26,7 @@ impl Draw for Canvas<Window> {
             Point::new(point.x, point.y)
             ];
         
-        let reulst = self.draw_lines(&points[..]);
+        let result = self.draw_lines(&points[..]);
 
         Ok(())
     }

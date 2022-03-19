@@ -7,7 +7,8 @@ pub mod Body {
         width: i32,
         height: i32,
         color: Color,
-        points: [Point; 5]
+        points: [Point; 5],
+        direction: Point,
     }
 
     impl Rectangle {
@@ -17,6 +18,7 @@ pub mod Body {
                 width,
                 height,
                 color,
+                direction : Point::new(0,0),
                 points : [
                     Point::new(point.x, point.y), 
                     Point::new(point.x + width, point.y), 
@@ -35,22 +37,12 @@ pub mod Body {
 
             false
         }
-
-        pub fn moveRectangle(&mut self, direction: Point) {
-            self.point += direction;
-            self.points = [
-                    Point::new(self.point.x + direction.x, self.point.y+ direction.y), 
-                    Point::new(self.point.x + direction.x + self.width, self.point.y+ direction.y), 
-                    Point::new(self.point.x + direction.x + self.width, self.point.y + direction.y + self.height), 
-                    Point::new(self.point.x + direction.x, self.point.y + direction.y + self.height),
-                    Point::new(self.point.x + direction.x, self.point.y+ direction.y)
-                    ];
-        }
     }
 
     pub trait GameBody{
         fn draw(&self, canvas: &mut Canvas<Window>) -> Result<(), String>;
         fn update(&mut self) -> Result<(), String>;
+        fn setDirection(&mut self, direction: Point);
     }
 
     impl GameBody for Rectangle {
@@ -63,8 +55,19 @@ pub mod Body {
         }
         
         fn update(&mut self) -> Result<(), String> {
-            self.moveRectangle(Point::new(1, 1));
+            self.point += self.direction;
+            self.points = [
+                    Point::new(self.point.x + self.direction.x, self.point.y+ self.direction.y), 
+                    Point::new(self.point.x + self.direction.x + self.width, self.point.y+ self.direction.y), 
+                    Point::new(self.point.x + self.direction.x + self.width, self.point.y + self.direction.y + self.height), 
+                    Point::new(self.point.x + self.direction.x, self.point.y + self.direction.y + self.height),
+                    Point::new(self.point.x + self.direction.x, self.point.y+ self.direction.y)
+                    ];
             Ok(())
+        }
+
+        fn setDirection(&mut self, direction: Point) {
+            self.direction = direction;
         }
     }
 }
