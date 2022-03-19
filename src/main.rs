@@ -12,7 +12,7 @@ use rust_2d_physics::libs::body::Body::{Rectangle, GameBody};
 
 fn main() { 
     let body1 = Rectangle::new(Point::new(10,10), 100, 300, WHITE);
-    let body2 = Rectangle::new(Point::new(100,10), 100, 30, RED);
+    let mut body2 = Rectangle::new(Point::new(100,10), 100, 30, RED);
 
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
@@ -44,8 +44,18 @@ fn main() {
             }
         }
 
+        if body1.collide(&body2) {
+            canvas.set_draw_color(GREEN);
+        }
+
+        canvas.clear();
+
+        body2.update();
+
         let result = body1.draw(&mut canvas);
         let result = body2.draw(&mut canvas);
+
+
 
         //let result = canvas.draw_rectangle_with_color(Point::new(100, 100), 150, 300, WHITE);
 

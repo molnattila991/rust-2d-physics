@@ -28,16 +28,29 @@ pub mod Body {
         }
 
         pub fn collide(&self, other: &Rectangle) -> bool {
-            if self.point.x() == other.point.x() {
+            if self.point.x() == other.point.x() || 
+            self.point.y() == other.point.y()  {
                 return true;
             }
 
             false
         }
+
+        pub fn moveRectangle(&mut self, direction: Point) {
+            self.point += direction;
+            self.points = [
+                    Point::new(self.point.x + direction.x, self.point.y+ direction.y), 
+                    Point::new(self.point.x + direction.x + self.width, self.point.y+ direction.y), 
+                    Point::new(self.point.x + direction.x + self.width, self.point.y + direction.y + self.height), 
+                    Point::new(self.point.x + direction.x, self.point.y + direction.y + self.height),
+                    Point::new(self.point.x + direction.x, self.point.y+ direction.y)
+                    ];
+        }
     }
 
     pub trait GameBody{
         fn draw(&self, canvas: &mut Canvas<Window>) -> Result<(), String>;
+        fn update(&mut self) -> Result<(), String>;
     }
 
     impl GameBody for Rectangle {
@@ -47,6 +60,11 @@ pub mod Body {
             let result = canvas.draw_lines_with_color(&self.points[..], self.color);
             
             Ok(())
-        }   
+        }
+        
+        fn update(&mut self) -> Result<(), String> {
+            self.moveRectangle(Point::new(1, 1));
+            Ok(())
+        }
     }
 }
