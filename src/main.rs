@@ -9,15 +9,7 @@ use rust_2d_physics::*;
 
 use rust_2d_physics::libs::draw::Draw;
 
-fn main() {
-    let points = [
-        Point::new(100, 100), 
-        Point::new(150, 100), 
-        Point::new(150, 150), 
-        Point::new(100, 150),
-        Point::new(100, 100)
-        ];
-        
+fn main() {       
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
@@ -48,7 +40,7 @@ fn main() {
             }
         }
 
-        let result = canvas.draw_line_with_color(&points[..], WHITE);
+        let result = canvas.draw_rectangle_with_color(Point::new(100, 100), 150, 300, WHITE);
 
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
