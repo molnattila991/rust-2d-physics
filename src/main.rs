@@ -8,8 +8,12 @@ use std::time::Duration;
 use rust_2d_physics::*;
 
 use rust_2d_physics::libs::draw::Draw;
+use rust_2d_physics::libs::body::Body::{Rectangle, GameBody};
 
-fn main() {       
+fn main() { 
+    let body1 = Rectangle::new(Point::new(10,10), 100, 300, WHITE);
+    let body2 = Rectangle::new(Point::new(100,10), 100, 30, RED);
+
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
@@ -40,7 +44,10 @@ fn main() {
             }
         }
 
-        let result = canvas.draw_rectangle_with_color(Point::new(100, 100), 150, 300, WHITE);
+        let result = body1.draw(&mut canvas);
+        let result = body2.draw(&mut canvas);
+
+        //let result = canvas.draw_rectangle_with_color(Point::new(100, 100), 150, 300, WHITE);
 
         canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
