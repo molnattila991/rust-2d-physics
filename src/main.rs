@@ -2,11 +2,22 @@ extern crate sdl2;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
+use sdl2::rect::Point;
 use std::time::Duration;
 
 use rust_2d_physics::*;
 
+use rust_2d_physics::libs::draw::Draw;
+
 fn main() {
+    let points = [
+        Point::new(100, 100), 
+        Point::new(150, 100), 
+        Point::new(150, 150), 
+        Point::new(100, 150),
+        Point::new(100, 100)
+        ];
+        
     let sdl_context = sdl2::init().unwrap();
     let video_subsystem = sdl_context.video().unwrap();
 
@@ -24,6 +35,9 @@ fn main() {
     canvas.present();
 
     'running: loop {
+        canvas.set_draw_color(LIGHT_BLUE);
+        canvas.clear();
+
         for event in event_pump.poll_iter() {
             match event {
                 Event::Quit {..} |
@@ -34,6 +48,9 @@ fn main() {
             }
         }
 
+        let result = canvas.draw_line_with_color(&points[..], WHITE);
+
+        canvas.present();
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
     }
 }
