@@ -1,5 +1,5 @@
 [package]
-name = "rust_2d_physic"
+name = "rust_2d_physics"
 version = "0.1.0"
 edition = "2021"
 

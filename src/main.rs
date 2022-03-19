@@ -4,7 +4,7 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 use std::time::Duration;
 
-use rust_2d_physic::*;
+use rust_2d_physics::*;
 
 fn main() {
     let sdl_context = sdl2::init().unwrap();
